@@ -63,7 +63,7 @@ tau_z = 1
       <Dynamics> 
 	      <DerivedVariable name="V" dimension="none" value="v /VOLT_SCALE"/>
 	      <DerivedVariable name="ca_conc" dimension="none" value="caConc / CONC_SCALE"/>
-	      <DerivedVariable name="r" exposure="r" dimension="per_time" value=" 1 /( 1  +  (0.001/ (ca_conc * 10^3))) / TIME_SCALE"/>
+	      <DerivedVariable name="x" exposure="x" dimension="none" value=" 1 /( 1  +  (0.001/ (ca_conc * 10^3)))"/>
       </Dynamics>
 </ComponentType>   
     

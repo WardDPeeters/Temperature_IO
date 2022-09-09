@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[45]:
+# In[284]:
 
 
 '''
@@ -14,7 +14,7 @@ WORKING ON: file/folder management; let everything happen in ./Run
 '''
 
 
-# In[46]:
+# In[285]:
 
 
 # Import the important stuff:
@@ -45,7 +45,7 @@ from mpl_toolkits.mplot3d import Axes3D
 os.getcwd()
 
 
-# In[47]:
+# In[374]:
 
 
 # Initiating the simulation details and credentials:
@@ -57,12 +57,15 @@ Make sure to run it after doing so.
 '''
 
 def initiate():
-    print(os.ctermid())
+    #print(os.ctermid())
     
     sim_id = 'Test'
+    length = 5000
+    step = 0.025
+    sim_length = [length,step] #Simulation length and step size, in ms
 
     path = os.getcwd()
-    Temps = [37] #degC 
+    Temps = [34.0,34.1,34.2,34.3,34.4,34.5,34.6,34.7,34.8,34.9,35.0] #degC 
     #in an array so that it becomes easy to modify later :)
 
     nml_cell_file = 'C51A_scaled_exp_resample_5.cell.nml' #enter the cell file in here. This file needs to be in the Cells folder.
@@ -70,11 +73,11 @@ def initiate():
     
     results = []
 
-    print(sim_id,path,Temps,nml_cell_file,cell_id,results)
-    return sim_id,path,Temps,nml_cell_file,cell_id,results
+    #print(sim_id,path,Temps,nml_cell_file,cell_id,results)
+    return sim_id,path,Temps,nml_cell_file,cell_id,results,sim_length
 
 
-# In[48]:
+# In[287]:
 
 
 # Cleaning up the directory from previous runs:
@@ -85,7 +88,7 @@ def clean(sim_id,cell_id):
     os.remove('./pynmlNetworks/nml_%s.net.nml'%cell_id)
     os.remove('./LEMSFILES/LEMS_%s_%s.xml'%(sim_id,cell_id))
     l = os.listdir('./Run')
-    print(l)
+    #print(l)
     if l != []:
         for name in l:
             if name != '.ipynb_checkpoints':
@@ -93,7 +96,7 @@ def clean(sim_id,cell_id):
             
 
 
-# In[49]:
+# In[288]:
 
 
 # Creating a network given the specific files:
@@ -103,6 +106,25 @@ def create_net(path,cell_id,nml_cell_file,Temp):
 
     shutil.copy(path+'/Cells/'+str(nml_cell_file), path+'/Run')
     
+    # This following piece of code was intended to make user experience better
+    '''
+    doc = nmlparse(path+'/Run/'+str(nml_cell_file))
+    cellincludes = doc.includes
+    newincludes = []
+    correct = True
+    for incl in cellincludes:
+        correct = True
+        if incl.contains('.channel.nml'):
+            if incl.contains('../channels/'):
+                incl = incl
+            elif incl.contains('/channels/'):
+                # Find where [...]/channels/[...] is located, and replace everything before it by ../channels/
+            else:
+                incl = '../channels/'+incl
+        newincludes.append(incl)
+    doc.includes = newincludes
+    '''
+        
     net_id = 'network_of_%s'%cell_id
     net_doc = nml.NeuroMLDocument(id='net_%s'%cell_id) # Create a document to store the network
 
@@ -126,7 +148,7 @@ def create_net(path,cell_id,nml_cell_file,Temp):
     return net_id,net_doc,net,pop
 
 
-# In[50]:
+# In[289]:
 
 
 # Include simulation instructions:
@@ -164,7 +186,7 @@ def enter_instructions(cell_id,net_doc,net,pop):
     return net_doc,net
 
 
-# In[51]:
+# In[290]:
 
 
 # Write and redefine the network file:
@@ -178,18 +200,18 @@ def write_net(path,cell_id,net_doc):
     
 
 
-# In[52]:
+# In[291]:
 
 
 # Write the LEMS file:
 
 #Needed: cell_id,pop,sim_id,path
-def write_LEMS(path,sim_id,cell_id,pop):
+def write_LEMS(path,sim_id,cell_id,pop,sim_length):
     
     # Redefine net
     sim_id = 'Test'
-    length = 5000
-    step = 0.025
+    length = sim_length[0] # ms
+    step = sim_length[1]
     
     # Write LEMS records
     soma_channel = ["na_s_soma/na_s/m/q", "na_s_soma/na_s/h/q", "kdr_soma/kdr/n/q", "k_soma/k/n/q", "cal_soma/cal/k/q", "cal_soma/cal/l/q", "BK_soma/BK/c/q"]
@@ -255,13 +277,13 @@ def write_LEMS(path,sim_id,cell_id,pop):
     # RETURN????
 
 
-# In[53]:
+# In[292]:
 
 
 # Setting up the experiment and then running it
 
 #Needed: sim_id,cell_id,nml_cell_file
-def setup_and_run(sim_id,cell_id,nml_cell_file):
+def setup_and_run(sim_id,cell_id,nml_cell_file,Temp):
     channel_dict = dict(na_s_soma=0, kdr_soma=1, k_soma=2, cal_soma=3, BK_soma=4, cah_dend=5, kca_dend=6, h_dend=7, cacc_dend=8, na_axon=9, k_axon=10)
     #results = []
     #parameter = []
@@ -288,6 +310,10 @@ def setup_and_run(sim_id,cell_id,nml_cell_file):
     na_axon=[200]     #default 200   250
     k_axon=[200]      #default 200   800
     
+    #parameters for the ca model
+    initial_ca_concentration = 3.7152
+    initial_exterior_ca_concentration = 3.0
+    
     
     # Start the experiment!
         
@@ -312,83 +338,115 @@ def setup_and_run(sim_id,cell_id,nml_cell_file):
     #axonic channel densities
     doc.cells[0].biophysical_properties.membrane_properties.channel_densities[channel_dict['na_axon']].cond_density = str(na_axon[0])+' mS_per_cm2'
     doc.cells[0].biophysical_properties.membrane_properties.channel_densities[channel_dict['k_axon']].cond_density = str(k_axon[0])+' mS_per_cm2'
+    
+    calcium_model = nml.Species(id="ca",concentration_model="ca_conc",ion="ca",initial_concentration=str(initial_ca_concentration)+' mM',initial_ext_concentration=str(initial_exterior_ca_concentration)+' mM')
+    doc.cells[0].biophysical_properties.intracellular_properties.species.append(calcium_model)
 
     # Write the file
     writers.NeuroMLWriter.write(doc, 'Cells/'+cell_id+'_scaled_exp_resample_5.cell.nml')
     writers.NeuroMLWriter.write(doc, 'Run/'+cell_id+'_scaled_exp_resample_5.cell.nml')
     
     # Control
-    out_dir,rel_filename = os.path.split(LEMS_file)
-    print(out_dir)
-    print(rel_filename)
+    out_dir,rel_filename = os.path.split(LEMS_file_use)
+    #print(out_dir)
+    #print(rel_filename)
     
-    print(f'You are running a simulation of {LEMS_file_use} and saving the results to {out_dir}\n')
+    print(f'You are running a simulation of {LEMS_file_use} at {Temp} degrees and saving the results to your current directory.\n')
     
     # RUN!
-    #results_Eden = eden_tools.runEden( LEMS_file_use, verbose=True )
-    #return results_Eden
+    #print("Start: %s using Eden"%LEMS_file_use)
+    results_Eden = eden_tools.runEden( LEMS_file_use, verbose=True )
+    return results_Eden
     
-    print("Start: %s"%LEMS_file_use)
-    results_Neuron = eden_tools.runNeuron( LEMS_file_use, verbose=True )
-    #print("Finish")
-    return results_Neuron
+    #print("Start: %s using Neuron"%LEMS_file_use)
+    #results_Neuron = eden_tools.runNeuron( LEMS_file_use, verbose=False )
+    #return results_Neuron
 
 
-# In[54]:
+# In[376]:
 
 
 # Plotting the results:
+class color:
+   PURPLE = '\033[95m'
+   CYAN = '\033[96m'
+   DARKCYAN = '\033[36m'
+   BLUE = '\033[94m'
+   GREEN = '\033[92m'
+   YELLOW = '\033[93m'
+   RED = '\033[91m'
+   BOLD = '\033[1m'
+   UNDERLINE = '\033[4m'
+   END = '\033[0m'
 
-def plot(results):
-    plt.xlabel('Time (s)')
-    plt.ylabel('Values')
-    plt.grid(True)
+def plot(results,Temps,sim_length):
+    # Use step size to determine these numbers
+    starttime = 0 #ms
+    endtime = 200 #ms
+    
+    start = int(starttime*(round(1/sim_length[1])))
+    end = int(endtime*(round(1/sim_length[1])))
     
     for i in range(len(results)):
+        Temp = Temps[i]
+        print(color.BOLD + "Temperature: %s"%Temp + color.END)
+        
+        results_Neuron = results[i]
+        results_Neuron['t'] = [x*1000 for x in results_Neuron['t']]
         
         for key in results[i]:
-            results_Neuron = results[i]
             if key == 't':
                 continue
-            plt.plot(results_Neuron['t'],results_Neuron[key], label=""+key)
+            plt.plot(results_Neuron['t'][start:end],results_Neuron[key][start:end], label=""+key)
+            plt.xlabel("Time (ms)")
+            plt.ylabel(key)
+            plt.grid(True)
+            plt.legend(loc='upper right')
+            plt.show()
         
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 0))
-        plt.show()
 
 
-# In[55]:
+# In[377]:
 
 
 # Main code:
 
 def main():
-    sim_id,path,Temps,nml_cell_file,cell_id,results = initiate()
-    print("Initiated!")
+    sim_id,path,Temps,nml_cell_file,cell_id,results,sim_length = initiate()
+    #print("Initiated!")
     clean(sim_id,cell_id)
-    print("Cleaned!")
+    #print("Cleaned!")
     for Temp in Temps:
         net_id,net_doc,net,pop = create_net(path,cell_id,nml_cell_file,Temp)
-        print("Net created!")
+        #print("Net created!")
         net_doc,net = enter_instructions(cell_id,net_doc,net,pop)
-        print("Instructions entered!")
+        #print("Instructions entered!")
         write_net(path,cell_id,net_doc)
-        print("Net file written!")
-        write_LEMS(path,sim_id,cell_id,pop)
-        print("LEMS file written!")
-        results_Neuron = setup_and_run(sim_id,cell_id,nml_cell_file)
-        print("Ran!")
+        #print("Net file written!")
+        write_LEMS(path,sim_id,cell_id,pop,sim_length)
+        #print("LEMS file written!")
+        results_Neuron = setup_and_run(sim_id,cell_id,nml_cell_file,Temp)
+        #print("Ran!")
         results.append(dict(results_Neuron))
-    clean(sim_id,cell_id)
-    plot(results)
+        
+        if Temp != Temps[-1]:
+            clean(sim_id,cell_id)
+    plot(results,Temps,sim_length)
 
 
-# In[56]:
+# In[378]:
 
 
 main()
 
 
-# In[79]:
+# In[311]:
+
+
+
+
+
+# In[ ]:
 
 
 
