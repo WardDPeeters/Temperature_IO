@@ -1,4 +1,0 @@
-This is a proxy document, it doesn't do anything.
-
-The Run folder is needed for the program, but without any content, the folder won't be committed to the git.
-This file is deleted automatically upon running the program.
