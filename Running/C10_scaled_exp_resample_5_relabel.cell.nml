@@ -7,13 +7,13 @@
     <include href="../channels/k.channel.nml"/>
     <include href="../channels/cal.channel.nml"/>
 
-    <!-- dend -->
+    <!-- proximal dendrite -->
     <include href="../channels/cah.channel.nml"/>
     <include href="../channels/kca.channel.nml"/>
     <include href="../channels/h.channel.nml"/>
     <include href="../channels/ca.nml"/>
 
-    <!-- axon -->
+    <!-- distal dendrite -->
     <include href="../channels/na_a.channel.nml"/>
 
     <!-- all  -->
@@ -4992,7 +4992,7 @@ inode R X Y Z D/2 idpar</notes>
                 <include segmentGroup="Sec_Comp_6"/>
                 <include segmentGroup="ExtraSomaSec_Comp_7"/>
                 <include segmentGroup="Sec_Comp_9"/>
-                <include segmentGroup="ExtraSomaSec_Comp_999">
+                <include segmentGroup="ExtraSomaSec_Comp_999"/>
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
                 <include segmentGroup="Sec_Comp_24"/>
@@ -5065,18 +5065,15 @@ inode R X Y Z D/2 idpar</notes>
             </segmentGroup>
 
             <segmentGroup id="ExtraSomaSegments">
-                <include segmentGroup="ExtraSomaSec_Comp_9"/>
-                <include segmentGroup="ExtraSomaSec_Comp_13"/>
-                <include segmentGroup="ExtraSomaSec_Comp_24"/>
-                <include segmentGroup="ExtraSomaSec_Comp_29"/>
+                <include segmentGroup="ExtraSomaSec_Comp_3"/>
+                <include segmentGroup="ExtraSomaSec_Comp_7"/>
+                <include segmentGroup="ExtraSomaSec_Comp_999"/>
             </segmentGroup>
 
             <segmentGroup id="distal_dendrite_group" neuroLexId="GO:0030424">    <!--Distal Dendrite group-->
 
-                <!--include segmentGroup="Sec_Comp_3"/-->
                 <include segmentGroup="Sec_Comp_4"/>
                 <include segmentGroup="Sec_Comp_6"/>
-                <!--include segmentGroup="Sec_Comp_7"/-->
                 <include segmentGroup="Sec_Comp_9"/>
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
