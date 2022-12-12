@@ -5050,10 +5050,9 @@ inode R X Y Z D/2 idpar</notes>
 
             <segmentGroup id="Colour_White">
                 <include segmentGroup="Soma"/>
-                <include segmentGroup="ExtraSomaSec_Comp_9"/>
-                <include segmentGroup="ExtraSomaSec_Comp_13"/>
-                <include segmentGroup="ExtraSomaSec_Comp_24"/>
-                <include segmentGroup="ExtraSomaSec_Comp_29"/>
+                <include segmentGroup="ExtraSomaSec_Comp_3"/>
+                <include segmentGroup="ExtraSomaSec_Comp_7"/>
+                <include segmentGroup="ExtraSomaSec_Comp_999"/>
             </segmentGroup>
 
             <segmentGroup id="proximal_dendrite_group" neuroLexId="GO:0030424">    <!--Proximal Dendrite group-->
@@ -5126,10 +5125,8 @@ inode R X Y Z D/2 idpar</notes>
             </segmentGroup>
 
             <segmentGroup id="Colour_DarkGrey">
-                <include segmentGroup="Sec_Comp_3"/>
                 <include segmentGroup="Sec_Comp_4"/>
                 <include segmentGroup="Sec_Comp_6"/>
-                <include segmentGroup="Sec_Comp_7"/>
                 <include segmentGroup="Sec_Comp_9"/>
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
