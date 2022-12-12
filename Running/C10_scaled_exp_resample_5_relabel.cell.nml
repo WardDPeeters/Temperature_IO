@@ -3366,7 +3366,7 @@ inode R X Y Z D/2 idpar</notes>
                 <member segment="1"/>
             </segmentGroup>
 
-            <segmentGroup id="Sec_Comp_3" neuroLexId="sao864921383">    <!--
+            <segmentGroup id="ExtraSomaSec_Comp_3" neuroLexId="sao864921383">    <!--
                 This group contains an unbranched set of segments, and all of the segmentGroups marked with
                 neuroLexId = sao864921383 form a non-overlapping set of all of the segments. 
                 These segmentGroups correspond to the 'cables' of NeuroML v1.8.1. -->
@@ -3418,7 +3418,7 @@ inode R X Y Z D/2 idpar</notes>
                 <member segment="102"/>
             </segmentGroup>
 
-            <segmentGroup id="Sec_Comp_7" neuroLexId="sao864921383">    <!--
+            <segmentGroup id="ExtraSomaSec_Comp_7" neuroLexId="sao864921383">    <!--
                 This group contains an unbranched set of segments, and all of the segmentGroups marked with
                 neuroLexId = sao864921383 form a non-overlapping set of all of the segments. 
                 These segmentGroups correspond to the 'cables' of NeuroML v1.8.1. -->
@@ -3432,7 +3432,7 @@ inode R X Y Z D/2 idpar</notes>
                 <member segment="18"/>
             </segmentGroup>
 
-            <segmentGroup id="Sec_Comp_9" neuroLexId="sao864921383">    <!--
+            <segmentGroup id="ExtraSomaSec_Comp_Extra" neuroLexId="sao864921383">   <!--
                 This group contains an unbranched set of segments, and all of the segmentGroups marked with
                 neuroLexId = sao864921383 form a non-overlapping set of all of the segments. 
                 These segmentGroups correspond to the 'cables' of NeuroML v1.8.1. -->
@@ -3444,7 +3444,14 @@ inode R X Y Z D/2 idpar</notes>
                 <member segment="10"/>
             
                 <member segment="15"/>
-            
+
+            </segmentGroup>
+
+            <segmentGroup id="Sec_Comp_9" neuroLexId="sao864921383">    <!--
+                This group contains an unbranched set of segments, and all of the segmentGroups marked with
+                neuroLexId = sao864921383 form a non-overlapping set of all of the segments. 
+                These segmentGroups correspond to the 'cables' of NeuroML v1.8.1. -->
+
                 <member segment="23"/>
             
                 <member segment="33"/>
@@ -4980,11 +4987,12 @@ inode R X Y Z D/2 idpar</notes>
 
             <segmentGroup id="all">
                 <include segmentGroup="Soma"/>
-                <include segmentGroup="Sec_Comp_3"/>
+                <include segmentGroup="ExtraSomaSec_Comp_3"/>
                 <include segmentGroup="Sec_Comp_4"/>
                 <include segmentGroup="Sec_Comp_6"/>
-                <include segmentGroup="Sec_Comp_7"/>
+                <include segmentGroup="ExtraSomaSec_Comp_7"/>
                 <include segmentGroup="Sec_Comp_9"/>
+                <include segmentGroup="ExtraSomaSec_Comp_Extra">
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
                 <include segmentGroup="Sec_Comp_24"/>
@@ -5044,12 +5052,20 @@ inode R X Y Z D/2 idpar</notes>
                 <include segmentGroup="Soma"/>
             </segmentGroup>
 
-            <segmentGroup id="dendrite_group" neuroLexId="GO:0030424">    <!--Dendrite group-->
+            <segmentGroup id="proximal_dendrite_group" neuroLexId="GO:0030424">    <!--Proximal Dendrite group-->
 
-                <include segmentGroup="Sec_Comp_3"/>
+                <include segmentGroup="ExtraSomaSec_Comp_3"/>
+                <include segmentGroup="ExtraSomaSec_Comp_7"/>
+                <include segmentGroup="ExtraSomaSec_Comp_Extra"/>
+
+            </segmentGroup>
+
+            <segmentGroup id="distal_dendrite_group" neuroLexId="GO:0030424">    <!--Distal Dendrite group-->
+
+                <!--include segmentGroup="Sec_Comp_3"/-->
                 <include segmentGroup="Sec_Comp_4"/>
                 <include segmentGroup="Sec_Comp_6"/>
-                <include segmentGroup="Sec_Comp_7"/>
+                <!--include segmentGroup="Sec_Comp_7"/-->
                 <include segmentGroup="Sec_Comp_9"/>
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
@@ -5174,16 +5190,16 @@ inode R X Y Z D/2 idpar</notes>
                 <channelDensity condDensity="20 mS_per_cm2" id="cal_soma" segmentGroup="soma_group"
                 ionChannel="cal" ion="cal" erev="120 mV"/>
 
-                <!-- dendrite 10 35 25 -->
-                <channelDensity condDensity="10 mS_per_cm2" id="cah_dend" segmentGroup="dendrite_group" ionChannel="cah" ion="ca" erev="120 mV"/>
-                <channelDensity condDensity="25 mS_per_cm2" id="kca_dend" segmentGroup="dendrite_group" ionChannel="kca" ion="k" erev="-75 mV"/>
-                <channelDensity condDensity="25 mS_per_cm2" id="h_dend" segmentGroup="dendrite_group" ionChannel="h" ion="k" erev="-43 mV"/>
+                <!-- proximal dendrite 10 35 25 -->
+                <channelDensity condDensity="10 mS_per_cm2" id="cah_dend" segmentGroup="proximal_dendrite_group" ionChannel="cah" ion="ca" erev="120 mV"/>
+                <channelDensity condDensity="35 mS_per_cm2" id="kca_dend" segmentGroup="proximal_dendrite_group" ionChannel="kca" ion="k" erev="-75 mV"/>
+                <channelDensity condDensity="25 mS_per_cm2" id="h_dend" segmentGroup="proximal_dendrite_group" ionChannel="h" ion="k" erev="-43 mV"/>
             
 
-                <!-- axon 
-                <channelDensity condDensity="200 mS_per_cm2" id="na_axon" segmentGroup="axon_group" ionChannel="na_a" ion="na" erev="55 mV"/>
-                <channelDensity condDensity="200 mS_per_cm2" id="k_axon" segmentGroup="axon_group" ionChannel="k" ion="k" erev="-75 mV"/>
--->
+                <!-- distal dendrite -->
+                <channelDensity condDensity="200 mS_per_cm2" id="na_distdend" segmentGroup="distal_dendrite_group" ionChannel="na_a" ion="na" erev="55 mV"/>
+                <channelDensity condDensity="200 mS_per_cm2" id="k_distdend" segmentGroup="distal_dendrite_group" ionChannel="k" ion="k" erev="-75 mV"/>
+
 
                 <channelDensity condDensity="1.3e-2 mS_per_cm2" id="leak_all" segmentGroup="all" ionChannel="leak" ion="_leak" erev="10 mV"/>
                 
@@ -5195,11 +5211,11 @@ inode R X Y Z D/2 idpar</notes>
 
 
             <intracellularProperties>
-                <species segmentGroup="dendrite_group" id="ca" ion="ca" concentrationModel="ca_conc" initialConcentration="3.7152 mM" initialExtConcentration="3.0mM"/>
+                <species segmentGroup="proximal_dendrite_group" id="ca" ion="ca" concentrationModel="ca_conc" initialConcentration="3.7152 mM" initialExtConcentration="3.0mM"/>
 
                 <resistivity value=".1 ohm_cm" segmentGroup="soma_group"/>
-                <resistivity value=".1 ohm_cm" segmentGroup="dendrite_group"/>
-                <!-- <resistivity value=".1 ohm_cm" segmentGroup="axon_group"/> -->
+                <resistivity value=".1 ohm_cm" segmentGroup="proximal_dendrite_group"/>
+                <resistivity value=".1 ohm_cm" segmentGroup="distal_dendrite_group"/>
             </intracellularProperties>
 
         </biophysicalProperties>
