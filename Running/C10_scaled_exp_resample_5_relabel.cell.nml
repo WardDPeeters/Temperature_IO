@@ -3432,7 +3432,7 @@ inode R X Y Z D/2 idpar</notes>
                 <member segment="18"/>
             </segmentGroup>
 
-            <segmentGroup id="ExtraSomaSec_Comp_Extra" neuroLexId="sao864921383">   <!--
+            <segmentGroup id="ExtraSomaSec_Comp_999" neuroLexId="sao864921383">   <!--
                 This group contains an unbranched set of segments, and all of the segmentGroups marked with
                 neuroLexId = sao864921383 form a non-overlapping set of all of the segments. 
                 These segmentGroups correspond to the 'cables' of NeuroML v1.8.1. -->
@@ -4992,7 +4992,7 @@ inode R X Y Z D/2 idpar</notes>
                 <include segmentGroup="Sec_Comp_6"/>
                 <include segmentGroup="ExtraSomaSec_Comp_7"/>
                 <include segmentGroup="Sec_Comp_9"/>
-                <include segmentGroup="ExtraSomaSec_Comp_Extra">
+                <include segmentGroup="ExtraSomaSec_Comp_999">
                 <include segmentGroup="Sec_Comp_16"/>
                 <include segmentGroup="Sec_Comp_22"/>
                 <include segmentGroup="Sec_Comp_24"/>
@@ -5043,21 +5043,32 @@ inode R X Y Z D/2 idpar</notes>
                 <include segmentGroup="Sec_Comp_553"/>
             </segmentGroup>
 
-            <segmentGroup id="Colour_White">
-                <include segmentGroup="Soma"/>
-            </segmentGroup>
-
             <segmentGroup id="soma_group" neuroLexId="GO:0043025">    <!--Soma group-->
 
                 <include segmentGroup="Soma"/>
+            </segmentGroup>
+
+            <segmentGroup id="Colour_White">
+                <include segmentGroup="Soma"/>
+                <include segmentGroup="ExtraSomaSec_Comp_9"/>
+                <include segmentGroup="ExtraSomaSec_Comp_13"/>
+                <include segmentGroup="ExtraSomaSec_Comp_24"/>
+                <include segmentGroup="ExtraSomaSec_Comp_29"/>
             </segmentGroup>
 
             <segmentGroup id="proximal_dendrite_group" neuroLexId="GO:0030424">    <!--Proximal Dendrite group-->
 
                 <include segmentGroup="ExtraSomaSec_Comp_3"/>
                 <include segmentGroup="ExtraSomaSec_Comp_7"/>
-                <include segmentGroup="ExtraSomaSec_Comp_Extra"/>
+                <include segmentGroup="ExtraSomaSec_Comp_999"/>
 
+            </segmentGroup>
+
+            <segmentGroup id="ExtraSomaSegments">
+                <include segmentGroup="ExtraSomaSec_Comp_9"/>
+                <include segmentGroup="ExtraSomaSec_Comp_13"/>
+                <include segmentGroup="ExtraSomaSec_Comp_24"/>
+                <include segmentGroup="ExtraSomaSec_Comp_29"/>
             </segmentGroup>
 
             <segmentGroup id="distal_dendrite_group" neuroLexId="GO:0030424">    <!--Distal Dendrite group-->
