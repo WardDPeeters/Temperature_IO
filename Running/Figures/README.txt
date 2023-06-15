@@ -1,0 +1,1 @@
+This folder is - in some cases - used to save figures to.

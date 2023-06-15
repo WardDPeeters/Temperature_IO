@@ -1,0 +1,1 @@
+This folder is used to - in some cases - output animations to.
